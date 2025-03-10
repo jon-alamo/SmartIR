@@ -1,14 +1,14 @@
 {
   "domain": "smartir",
   "name": "SmartIR",
-  "documentation": "https://github.com/smartHomeHub/SmartIR",
+  "documentation": "https://github.com/jon-alamo/SmartIR",
   "dependencies": [],
   "codeowners": ["@smartHomeHub"],
   "requirements": ["aiofiles>=0.6.0", "git+https://github.com/jon-alamo/hisense-ac-remote-dg11l1.git"],
   "homeassistant": "2024.10.0",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "updater": {
-    "version": "1.18.0",
+    "version": "1.18.1",
     "releaseNotes": "-- Adds support for light devices",
     "files": [
       "__init__.py",
