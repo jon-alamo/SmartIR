@@ -123,6 +123,9 @@ class SmartIRClimate(ClimateEntity, RestoreEntity):
         self._operation_modes = [HVACMode.OFF] + valid_hvac_modes
         self._fan_modes = device_data['fanModes']
         self._swing_modes = device_data.get('swingModes')
+        self._remote_thermostat = device_data.get('remoteThermostat')
+        self._max_thermostat_temp = device_data.get('maxThermostatTemperature')
+        self._min_thermostat_temp = device_data.get('minThermostatTemperature')
         self._commands = device_data['commands']
 
         self._target_temperature = self._min_temperature
@@ -394,11 +397,18 @@ class SmartIRClimate(ClimateEntity, RestoreEntity):
         self._async_update_temp(new_state)
         self.async_write_ha_state()
 
+        if self._remote_thermostat:
+            temp = int(float(new_state.state))
+            if temp > self._max_thermostat_temp:
+                temp = self._max_thermostat_temp
+            elif temp < self._min_thermostat_temp:
+                temp = self._min_thermostat_temp
+            await self._controller.send(self._commands['thermostat'][temp])
+
     async def _async_humidity_sensor_changed(self, entity_id, old_state, new_state):
         """Handle humidity sensor changes."""
         if new_state is None:
             return
-
         self._async_update_humidity(new_state)
         self.async_write_ha_state()
 
