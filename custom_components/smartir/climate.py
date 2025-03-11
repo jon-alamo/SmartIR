@@ -396,11 +396,11 @@ class SmartIRClimate(ClimateEntity, RestoreEntity):
 
         if self._remote_thermostat is not None:
             temp = int(float(new_state.state))
-            # if temp > self._max_thermostat_temp:
-            #     temp = self._max_thermostat_temp
-            # elif temp < self._min_thermostat_temp:
-            #     temp = self._min_thermostat_temp
-            # await self._controller.send(self._commands['thermostat'][temp])
+            if temp > self._max_thermostat_temp:
+                temp = self._max_thermostat_temp
+            elif temp < self._min_thermostat_temp:
+                temp = self._min_thermostat_temp
+            await self._controller.send(self._commands['thermostat'][str(temp)])
 
         self._async_update_temp(new_state)
         self.async_write_ha_state()
